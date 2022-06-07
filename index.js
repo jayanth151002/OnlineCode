@@ -30,20 +30,26 @@ app.post('/createsub', (req, res) => {
     const options = {
         method: 'POST',
         url: 'https://judge0-ce.p.rapidapi.com/submissions',
-        params: { base64_encoded: 'false', fields: '*' },
+        params: { base64_encoded: 'true', fields: '*' },
         headers: {
             'content-type': 'application/json',
             'Content-Type': 'application/json',
             'X-RapidAPI-Host': process.env.HOST,
             'X-RapidAPI-Key': process.env.KEY
         },
-        data: '{"language_id":71,"source_code":' + `${req.body.code}` + '}'
+        data: req.body
     };
 
+    var resp
+
     axios.request(options).then(function (response) {
-        checkStatus(response.data.token);
+        checkStatus(response.data.token)
+            .then(() => {
+                console.log('res sent')
+            })
     }).catch(function (error) {
         console.error(error);
+        res.send(error)
     });
 
     const checkStatus = async (token) => {
@@ -62,12 +68,11 @@ app.post('/createsub', (req, res) => {
                 let statusId = response.data.status?.id;
                 if (statusId === 1 || statusId === 2) {
                     setTimeout(() => {
-                        checkStatus(token)
+                        return checkStatus(token)
                     }, 2000)
                     return
                 } else {
-                    console.log(response.data)
-                    return
+                    res.status(200).send(response.data)
                 }
             })
             .catch(err => {
