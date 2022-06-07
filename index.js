@@ -10,6 +10,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
 app.get('/', (req, res) => {
     axios.get('https://judge0-ce.p.rapidapi.com/about', {
         headers: {
@@ -82,6 +83,6 @@ app.post('/createsub', (req, res) => {
 
 })
 
-app.listen(6000, () => {
+app.listen(8000, () => {
     console.log("server is running");
 })
