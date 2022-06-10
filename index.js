@@ -41,15 +41,13 @@ app.post('/createsub', (req, res) => {
         data: req.body
     };
 
-    var resp
-
     axios.request(options).then(function (response) {
         checkStatus(response.data.token)
             .then(() => {
                 console.log('res sent')
             })
     }).catch(function (error) {
-        console.error(error);
+        console.error(error)
         res.send(error)
     });
 
@@ -57,7 +55,7 @@ app.post('/createsub', (req, res) => {
         const options = {
             method: "GET",
             url: 'https://judge0-ce.p.rapidapi.com/submissions/' + token,
-            params: { base64_encoded: "false", fields: "*" },
+            params: { base64_encoded: "true", fields: "*" },
             headers: {
                 "X-RapidAPI-Host": process.env.HOST,
                 "X-RapidAPI-Key": process.env.KEY,
@@ -73,7 +71,7 @@ app.post('/createsub', (req, res) => {
                     }, 2000)
                     return
                 } else {
-                    res.status(200).send(response.data)
+                    res.status(200).send({ data: response.data, output: Buffer.from(response.data.stdout, 'base64').toString('ascii') })
                 }
             })
             .catch(err => {
