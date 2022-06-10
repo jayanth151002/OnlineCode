@@ -71,7 +71,13 @@ app.post('/createsub', (req, res) => {
                     }, 2000)
                     return
                 } else {
-                    res.status(200).send({ data: response.data, output: Buffer.from(response.data.stdout, 'base64').toString('ascii') })
+                    res.status(200).send({
+                        id: response.data.status.id,
+                        desc: response.data.status.description,
+                        time: response.data.time,
+                        message: response.data.message != null ? Buffer.from(response.data.message, 'base64').toString('ascii') : "",
+                        output: response.data.stdout != null ? Buffer.from(response.data.stdout, 'base64').toString('ascii') : ""
+                    })
                 }
             })
             .catch(err => {
