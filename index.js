@@ -57,7 +57,7 @@ app.post('/createsub', (req, res) => {
             params: { base64_encoded: "true", fields: "*" },
             headers: {
                 "X-RapidAPI-Host": process.env.HOST,
-                "X-RapidAPI-Key": process.env.KEY,
+                "X-RapidAPI-Key": process.env.KEY
             },
         };
 
