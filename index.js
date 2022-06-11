@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
 
 
 app.post('/createsub', (req, res) => {
-    console.log(req.body)
     const options = {
         method: 'POST',
         url: 'https://judge0-ce.p.rapidapi.com/submissions',
@@ -71,6 +70,7 @@ app.post('/createsub', (req, res) => {
                     }, 2000)
                     return
                 } else {
+                    console.log(response.data)
                     res.status(200).send({
                         id: response.data.status.id,
                         desc: response.data.status.description,
